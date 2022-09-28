@@ -1,6 +1,8 @@
 defmodule OctoEventsWeb.EventsController do
     use OctoEventsWeb, :controller
 
+    action_fallback OctoEventsWeb.FallbackController
+
     def create(conn, params) do
         params
         |> OctoEvents.create_event()
@@ -12,4 +14,6 @@ defmodule OctoEventsWeb.EventsController do
         |> put_status(:ok)
         |> render("create.json", event: event)
     end
+
+    defp handle_response({:error, _changeset} = error, _conn), do: error
 end
